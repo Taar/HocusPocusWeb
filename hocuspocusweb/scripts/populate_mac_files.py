@@ -13,7 +13,6 @@ from hocuspocusweb.models.meta import (
     get_dbmaker,
     )
 from hocuspocusweb.models import User
-from getpass import getpass
 
 
 def main(settings):
