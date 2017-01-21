@@ -42,6 +42,13 @@ def main(settings, csv_path):
                     UserPassword(user['name'], user['email'], user['password'])
                 )
 
+    print_users_passwords(users_password_pairs)
+
+    print("Completed successfully!")
+    sys.exit(0)
+
+
+def print_users_passwords(users_password_pairs):
     template = "{name} [{email}] {password}"
     for pair in users_password_pairs:
         print(
@@ -51,9 +58,6 @@ def main(settings, csv_path):
                 password=pair.password
             )
         )
-
-    print("Completed successfully!")
-    sys.exit(0)
 
 
 def generate_password(length=9):
