@@ -1,6 +1,3 @@
-import os
-import signal
-
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.view import view_config, view_defaults
@@ -35,11 +32,10 @@ class Index:
 
         ip_address = self.request.client_addr
         query = self.request.dbsession.query(User)
-        print(ip_address)
+        print('ip address: {}'.format(ip_address))
         # will throw NoResultFound which will be handled in an Exception view
         query.filter(User.ip_address == ip_address).one()
 
-        print(self.request.POST)
         password = self.request.POST['password']
 
         data = {
@@ -50,9 +46,9 @@ class Index:
         form = OpenDoorForm(self.request.dbsession, data=data)
 
         if form.validate():
-            print(self.request.door_pid)
+            print('Door pid: {}'.format(self.request.door_pid))
             try:
-                os.kill(int(self.request.door_pid), signal.SIGUSR1)
+                self.request.signal_usr1(int(self.request.door_pid))
             except ValueError:
                 return Response('Internal Error, PID is not a int.',
                                 content_type='text/plain',
