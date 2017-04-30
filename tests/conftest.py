@@ -1,5 +1,6 @@
 import pytest
 import transaction
+import logging
 
 from pyramid import testing
 
@@ -39,3 +40,8 @@ class DataBase():
 @pytest.fixture(scope='module')
 def db():
     return DataBase()
+
+
+@pytest.fixture(scope='module')
+def log():
+    return logging.getLogger('tests')

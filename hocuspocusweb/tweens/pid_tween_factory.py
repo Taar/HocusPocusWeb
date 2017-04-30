@@ -1,8 +1,8 @@
 from pyramid.response import Response
-from ..util.file_helpers import get_file_contents
+from ..util.file_helpers import get_file_contents as gfc
 
 
-def pid_tween_factory(handler, registry):
+def pid_tween_factory(handler, registry, get_file_contents=gfc):
 
     def tween(request):
         pid_path = request.registry.settings.get(
