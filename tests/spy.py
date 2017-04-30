@@ -19,8 +19,7 @@ class Spy:
         self._calls.append(Call(kwargs, args))
         if self._throw:
             raise self._throw
-        if self._returns:
-            return self._returns
+        return self._returns
 
     def calledWith(self, index):
         return self._calls[index]
