@@ -20,6 +20,7 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
+# TODO lock down these versions
 install_requires = [
     'setuptools',
     'pyramid',

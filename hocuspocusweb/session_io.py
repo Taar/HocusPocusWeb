@@ -7,7 +7,6 @@ def signal_usr1(pid):
 
 
 def dev_signal_usr1(pid):
-    print('WTF')
     print('Signal was sent to: {} but not really'.format(pid))
 
 

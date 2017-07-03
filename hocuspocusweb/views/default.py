@@ -1,4 +1,5 @@
 import logging
+import transaction
 
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
@@ -7,6 +8,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from ..models.user import User
 from ..forms.open_door import OpenDoorForm
+from ..forms.password_reset import PasswordResetForm
 
 
 log = logging.getLogger(__name__)
@@ -58,5 +60,42 @@ class Index:
                 return {'message': message}
             else:
                 return {'message': 'Success!'}
+
+        return {'errors': form.errors}
+
+
+@view_defaults(route_name='password_reset')
+class PasswordReset:
+
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(renderer='json',
+                 attr='post',
+                 request_method='POST')
+    def post(self):
+
+        ip_address = self.request.client_addr
+        query = self.request.dbsession.query(User)
+        log.info('ip address: {}'.format(ip_address))
+        try:
+            user = query.filter(User.ip_address == ip_address).one()
+        except NoResultFound:
+            self.request.response.status = 403
+            return {'message': 'User not found'}
+
+        form = PasswordResetForm(self.request.dbsession,
+                                 data=self.request.POST)
+
+        if form.validate():
+            query = self.request.dbsession.query(User)
+            user.set_password(form.password.data)
+            with self.request.tm as tm:
+                self.request.dbsession.add(user)
+                tm.commit()
+
+            return {
+                'message': 'Your password was reset!'
+            }
 
         return {'errors': form.errors}
