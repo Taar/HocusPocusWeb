@@ -12,6 +12,7 @@ def main(global_config, **settings):
         'error_file_tween_factory.error_file_tween_factory'))
     config.include('pyramid_jinja2')
     config.include('.models.meta')
+    config.include('.session_io')
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('index', '/')
     config.scan()

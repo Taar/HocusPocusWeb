@@ -11,7 +11,7 @@ class PyTest(TestCommand):
 
     def initialize_options(self):
         TestCommand.initialize_options(self)
-        self.pytest_args = []
+        self.pytest_args = ['-s']
 
     def run_tests(self):
         # import here, cause outside the eggs aren't loaded
@@ -20,6 +20,7 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
+# TODO lock down these versions
 install_requires = [
     'setuptools',
     'pyramid',
